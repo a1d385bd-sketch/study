@@ -1,7 +1,7 @@
-import { openFormDialog } from './src/ui/dialogs.js';
-import { today, practice, studyMethods, aiPage, quizzes, progress, planner, settings, mindmaps, revision, subjectPage, renderSubjects, aiTools } from './src/views.js';
-import { state, seed, cards, save, $, $$, icon, toast, subject, dayKey, dueCards, dueMistakes, completedSessions, getStreak, escapeHtml } from './src/store.js';
-import { applyCardRating } from './src/domain/reviews.js';
+import { openFormDialog } from '../ui/dialogs.js';
+import { today, practice, studyMethods, aiPage, quizzes, progress, planner, settings, mindmaps, revision, subjectPage, renderSubjects, aiTools } from '../views.js';
+import { state, seed, cards, save, $, $$, icon, toast, subject, dayKey, dueCards, dueMistakes, completedSessions, getStreak, escapeHtml } from '../store.js';
+import { applyCardRating } from '../domain/reviews.js';
 
 let focusClock=null;
 function render(){
@@ -60,9 +60,14 @@ function bindAiPage(){let selected=state.aiTool||aiTools[0];$$('[data-ai-tool]')
 
 // User-owned data views. Empty states stay empty until the learner records real material/activity.
 function go(page){state.page=page;save();render();window.scrollTo({top:0,behavior:'smooth'});$('#sidebar').classList.remove('open');}
-$$('.nav-item').forEach(el=>el.addEventListener('click',()=>go(el.dataset.page)));
-$$('.profile-button,.small-avatar').forEach(el=>el.addEventListener('click',()=>go('settings')));
-$('#menu-toggle').addEventListener('click',()=>$('#sidebar').classList.toggle('open'));
- document.addEventListener('click',e=>{const item=e.target.closest('[data-subject]');if(item){state.activeSubject=item.dataset.subject;go('subject');}});
 function openSubjectModal(existing=undefined){const overlay=document.createElement('div');overlay.className='subject-modal-backdrop';overlay.innerHTML=`<section class="subject-modal" role="dialog" aria-modal="true" aria-label="${existing?'Edit':'Add'} subject"><h3>${existing?'Edit':'Add'} subject</h3><form id="subject-form"><label class="field-label">Subject name<input name="name" required maxlength="80" value="${escapeHtml(existing?.name||'')}" placeholder="Your subject"></label><label class="field-label">Course / level<input name="course" maxlength="100" value="${escapeHtml(existing?.course||'')}" placeholder="Optional course details"></label><div class="modal-actions"><button class="secondary-button" type="button" data-cancel>Cancel</button><button class="primary-button">Save subject</button>${existing?'<button class="text-link" type="button" data-delete-subject>Delete</button>':''}</div></form></section>`;document.body.append(overlay);overlay.querySelector('[data-cancel]').onclick=()=>overlay.remove();overlay.querySelector('#subject-form').onsubmit=e=>{e.preventDefault();const f=new FormData(e.currentTarget),name=String(f.get('name')).trim(),course=String(f.get('course')).trim();if(existing){existing.name=name;existing.course=course;}else{const colors=['#607b9a','#668a69','#987568','#527b86','#765f97'];const tone=colors[state.subjects.length%colors.length],id=crypto.randomUUID();state.subjects.push({id,name,course,short:name.split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase(),tone,bg:'#f0f1ec',areas:[],assessments:[],target:null});state.activeSubject=id;}save();overlay.remove();render();toast('Subject saved.');};overlay.querySelector('[data-delete-subject]')?.addEventListener('click',()=>{if(!confirm('Delete this subject? Its study records will be unassigned.'))return;for(const list of [state.cards,state.decks,state.sessions,state.sacs])for(const x of list)if(x.subject===existing.id)x.subject='';state.subjects=state.subjects.filter(s=>s.id!==existing.id);state.activeSubject='';save();overlay.remove();render();});}
-render();
+let mounted=false;
+export function mountStudyLoop(){
+ if(mounted)return;
+ mounted=true;
+ $$('.nav-item').forEach(el=>el.addEventListener('click',()=>go(el.dataset.page)));
+ $$('.profile-button,.small-avatar').forEach(el=>el.addEventListener('click',()=>go('settings')));
+ $('#menu-toggle')?.addEventListener('click',()=>$('#sidebar').classList.toggle('open'));
+ document.addEventListener('click',e=>{const item=e.target.closest('[data-subject]');if(item){state.activeSubject=item.dataset.subject;go('subject');}});
+ render();
+}

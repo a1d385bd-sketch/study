@@ -5,10 +5,10 @@ StudyLoop is an independent, local-first study app. It does not include AcedIt s
 ## Run locally
 
 1. Install Node.js 20 or newer.
-2. Open a terminal in this folder and run node server.mjs (or npm.cmd start in PowerShell).
-3. Open the local URL printed in the terminal. If the default port is already in use, the server will select the next free one.
+2. Open a terminal in this folder and run `npm install` once.
+3. Run `npm run dev` and open the local URL printed in the terminal.
 
-There are no package dependencies. Study records live in this browser on this computer. Use Settings to export or restore a JSON backup.
+The frontend uses React and Vite. Study records live in this browser on this computer. Use Settings to export or restore a JSON backup.
 
 ## Workflows
 
@@ -22,12 +22,14 @@ There are no package dependencies. Study records live in this browser on this co
 
 ## Project structure
 
-- app.js: application startup, routing, and event handlers
+- src/App.jsx: React application shell, sidebar, and global header
+- src/main.jsx: React/Vite entry point
+- src/controllers/studyloop-controller.js: page navigation and study interactions
 - src/store.js: local state loading, normalization, and persistence
 - src/views.js: feature-view exports
 - src/views/: dashboard, study, planner, quiz, and AI-scaffold pages
 - src/domain/reviews.js: spaced-repetition scheduling
 - src/ui/dialogs.js: shared accessible form dialog
-- server.mjs: local static-file server
+- vite.config.js: local development server and production build configuration
 
 Course areas, assessment weights, study materials, and results are entered by the learner. The app does not ship sample learner records or claim official VCAA marks.
