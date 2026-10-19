@@ -34,17 +34,15 @@
         <button class="nav-item" data-page="quizzes"><svg><use href="#i-check"/></svg><span>Quizzes</span><span class="nav-count" id="nav-due">6</span></button>
         <button class="nav-item" data-page="planner"><svg><use href="#i-calendar"/></svg><span>Planner</span></button>
         <button class="nav-item" data-page="progress"><svg><use href="#i-chart"/></svg><span>Progress</span></button>
-        <button class="nav-item" data-page="social"><svg><use href="#i-leaf"/></svg><span>Study circles</span></button>
       </nav>
       <div class="side-label subject-label">YOUR SUBJECTS <button class="tiny-add" id="add-subject" aria-label="Add subject">+</button></div>
       <div class="subject-list" id="subject-list"></div>
       <div class="sidebar-bottom">
-        <div class="gentle-note"><span class="note-spark"><svg><use href="#i-spark"/></svg></span><p><strong>A little, often.</strong><br>That’s how it sticks.</p></div>
-        <button class="profile-button" data-page="settings"><span class="avatar">A</span><span class="profile-copy"><strong>Alex Morgan</strong><small>Year 12 · VCE</small></span><span class="profile-more">···</span></button>
+        <button class="profile-button" data-page="settings"><span class="avatar" id="profile-initial">S</span><span class="profile-copy"><strong id="profile-name">Study profile</strong><small id="profile-year">Set up your details</small></span><span class="profile-more">···</span></button>
       </div>
     </aside>
     <main class="main-area">
-      <header class="topbar"><button id="menu-toggle" class="icon-button mobile-menu" aria-label="Open menu"><svg><use href="#i-menu"/></svg></button><div class="breadcrumb"><span>My space</span><span class="crumb-slash">/</span><strong id="page-title">Today</strong></div><div class="topbar-right"><span class="streak-pill"><svg><use href="#i-flame"/></svg><b id="streak-count">8</b><span>day streak</span></span><button class="avatar small-avatar" data-page="settings" aria-label="Your profile">A</button></div></header>
+      <header class="topbar"><button id="menu-toggle" class="icon-button mobile-menu" aria-label="Open menu"><svg><use href="#i-menu"/></svg></button><div class="breadcrumb"><span>My space</span><span class="crumb-slash">/</span><strong id="page-title">Today</strong></div><div class="topbar-right"><span class="streak-pill"><svg><use href="#i-flame"/></svg><b id="streak-count">0</b><span>day streak</span></span><button class="avatar small-avatar" data-page="settings" aria-label="Your profile" id="top-avatar">S</button></div></header>
       <div class="content" id="content"></div>
     </main>
   </div>
